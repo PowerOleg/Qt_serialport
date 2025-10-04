@@ -3,9 +3,10 @@
 
 #include <QMainWindow>
 #include <QObject>
-//#include <QDebug>
-//#include <QCoreApplication>
+#include <QDebug>
+#include <QThread>
 #include <QtSerialPort>
+#include "uart.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,8 +19,10 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    UART *com;
 private:
     Ui::MainWindow *ui;
+
+    QThread *thr;
 };
 #endif // MAINWINDOW_H
