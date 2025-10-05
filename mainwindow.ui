@@ -45,4 +45,8 @@
  </widget>
  <resources/>
  <connections/>
+ <slots>
+  <signal>signal1()</signal>
+  <slot>slotEnableLed()</slot>
+ </slots>
 </ui>

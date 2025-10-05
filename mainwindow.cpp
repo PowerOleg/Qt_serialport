@@ -6,18 +6,36 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    com = new UART();
+    com = new UART();//почему не передал this???
     thr = new QThread();
 
     connect(thr,&QThread::started,com,&UART::slotInit);//Открываем порт
-    connect(ui->pushButton,&QPushButton::clicked,com,&UART::slotEnableLed);//Соединяем кнопку ВКЛ
-    connect(ui->pushButton_2,&QPushButton::clicked,com,&UART::slotDisableLed);//Соединяем кнопку ВЫКЛ
+    //connect(ui->pushButton,&QPushButton::clicked,com,&UART::slotEnableLed);//TODO
+    //connect(ui->pushButton_2,&QPushButton::clicked,com,&UART::slotDisableLed);//TODO
+    connect(thr,&QThread::finished,com,&UART::slotClosePort);//Закрываем порт
     com->moveToThread(thr);
-    com->Port->moveToThread(thr);//041025
+    com->Port->moveToThread(thr);
+    thr->start();
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+    thr->quit();
+    delete com;
+    if(thr->isFinished())
+    {
+        delete thr;
+        delete ui;
+    }
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    com->slotEnableLed();
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    com->slotDisableLed();
 }
 

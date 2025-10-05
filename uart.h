@@ -3,26 +3,26 @@
 
 #include <QObject>
 #include <QtSerialPort>
+#include <QDebug>
 
 class UART : public QObject
 {
     Q_OBJECT
 private:
+    QByteArray TxArr;
+
     bool PortInit(QString name);
     void sendData(QByteArray Data,int length);
-    int Rxlength = 0;
-    QByteArray RxArr;
-    QByteArray TxArr;
 public:
-    explicit UART(QObject *parent = nullptr);
     QSerialPort *Port;
-    void setRxLength(int length);
+    explicit UART(QObject *parent = nullptr);
 signals:
 public slots:
     void slotRead();
     void slotEnableLed();
     void slotDisableLed();
     void slotInit();
+    void slotClosePort();
 };
 
 #endif // UART_H
