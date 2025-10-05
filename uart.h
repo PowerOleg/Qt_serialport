@@ -17,6 +17,7 @@ public:
     QSerialPort *Port;
     explicit UART(QObject *parent = nullptr);
 signals:
+   void sig_sendDataToScreen(QByteArray data);
 public slots:
     void slotRead();
     void slotEnableLed();

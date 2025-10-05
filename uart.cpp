@@ -12,6 +12,7 @@ void UART::slotRead()
     QByteArray arr;
     arr.append(Port->readAll());
     qDebug()<< "Data IN: "<< arr;
+    emit sig_sendDataToScreen(arr);
     arr.clear();
 }
 

@@ -9,10 +9,15 @@ MainWindow::MainWindow(QWidget *parent)
     com = new UART();//where this argument?
     thr = new QThread();
 
-    connect(thr,&QThread::started,com,&UART::slotInit);//Открываем порт
-    //connect(ui->pushButton,&QPushButton::clicked,com,&UART::slotEnableLed);//TODO
-    //connect(ui->pushButton_2,&QPushButton::clicked,com,&UART::slotDisableLed);//TODO
-    connect(thr,&QThread::finished,com,&UART::slotClosePort);//Закрываем порт
+    connect(com, &UART::sig_sendDataToScreen, this, [=](QByteArray receiveData)
+    {
+        //char *data = receiveData.data();
+        //int number = *data;
+        //ui->txtReadSerial->setText(QString::number(number));
+        ui->txtReadSerial->setText(receiveData);
+    });
+    connect(thr,&QThread::started,com,&UART::slotInit);
+    connect(thr,&QThread::finished,com,&UART::slotClosePort);
     com->moveToThread(thr);
     com->Port->moveToThread(thr);
     thr->start();
