@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    com = new UART();//почему не передал this???
+    com = new UART();//where this argument?
     thr = new QThread();
 
     connect(thr,&QThread::started,com,&UART::slotInit);//Открываем порт
@@ -29,13 +29,12 @@ MainWindow::~MainWindow()
     }
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_btnOn_clicked()
 {
-    com->slotEnableLed();
+   com->slotEnableLed();
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_btnOff_clicked()
 {
     com->slotDisableLed();
 }
-

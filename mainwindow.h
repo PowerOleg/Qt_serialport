@@ -20,10 +20,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
-    void on_pushButton_clicked();
-
-    void on_pushButton_2_clicked();
-
+    void on_btnOn_clicked();
+    void on_btnOff_clicked();
 private:
     Ui::MainWindow *ui;
     QThread *thr;

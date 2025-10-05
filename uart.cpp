@@ -33,7 +33,6 @@ void UART::sendData(QByteArray Data, int length)
             QByteArray temp;
             temp.resize(0);
             temp.append(Data[i]);
-            // qDebug()<<temp;
             Port->write(temp);
             Port->waitForBytesWritten();
             temp.clear();
@@ -42,23 +41,6 @@ void UART::sendData(QByteArray Data, int length)
     }
 }
 
-//void UART::sendData(QByteArray data, int length)
-//{
-//    if(data.length() == length)
-//    {
-//        for(int i = 0;i<length;i++)
-//        {
-//            QByteArray temp;
-//            temp.resize(1);
-//            temp.append(data[i]);
-//            Port->write(temp);
-//            Port->waitForBytesWritten();
-//            temp.clear();
-//        }
-//        data.clear();
-//    }
-//}
-
 void UART::slotDisableLed()
 {
     TxArr.clear();
@@ -66,21 +48,6 @@ void UART::slotDisableLed()
     TxArr.append(static_cast<char>(2));
     sendData(TxArr,1);
 }
-
-//void UART::slotEnableLed()
-//{
-//    TxArr.clear();
-//    TxArr.resize(1);
-//    TxArr.append(static_cast<char>(1));
-//    sendData(TxArr,1);
-//}
-//void UART::slotDisableLed()
-//{
-//    TxArr.clear();
-//    TxArr.resize(1);
-//    TxArr.append(static_cast<char>(0));
-//    sendData(TxArr,1);
-//}
 
 void UART::slotInit()
 {
