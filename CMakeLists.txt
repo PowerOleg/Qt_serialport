@@ -17,8 +17,10 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
-        uart.h
-        uart.cpp
+        controller/uart_controller.h
+        controller/uart_controller.cpp
+        model/data.h
+        model/data.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -44,6 +46,8 @@ else()
     endif()
 endif()
 
+target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/model)
+target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/controller)
 target_link_libraries(serialport PRIVATE Qt6::Widgets
                                         Qt6::SerialPort)
 

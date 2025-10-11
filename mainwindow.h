@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <QThread>
 #include <QtSerialPort>
-#include "uart.h"
+#include "controller/uart_controller.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,7 +16,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    UART *com;
+    Uart_controller *com;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private slots:

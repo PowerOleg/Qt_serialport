@@ -6,20 +6,20 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    com = new UART();//where this argument?
+    com = new Uart_controller();//where this argument?
     thr = new QThread();
 
-    connect(com, &UART::sig_sendDataToScreen, this, [=](QByteArray receiveData)
+    connect(com, &Uart_controller::sig_sendDataToScreen, this, [=](QByteArray receiveData)
     {
         //char *data = receiveData.data();
         //int number = *data;
         //ui->txtReadSerial->setText(QString::number(number));
         ui->txtReadSerial->setText(receiveData);
     });
-    connect(thr,&QThread::started,com,&UART::slotInit);
-    connect(thr,&QThread::finished,com,&UART::slotClosePort);
+    connect(thr,&QThread::started,com,&Uart_controller::slotInit);
+    connect(thr,&QThread::finished,com,&Uart_controller::slotClosePort);
     com->moveToThread(thr);
-    com->Port->moveToThread(thr);
+    com->port->moveToThread(thr);
     thr->start();
 }
 
