@@ -9,6 +9,10 @@ class Data : public QObject
     Q_OBJECT
 public:
     explicit Data(QObject *parent = nullptr);
+
+    bool SetData(QByteArray byteArray);
+    QByteArray GetData();
+private:
     QByteArray byteArray;
 };
 

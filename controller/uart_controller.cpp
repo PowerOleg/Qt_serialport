@@ -5,18 +5,13 @@ UartController::UartController(QObject *parent)
 {
     port = new QSerialPort(this);
     dataFromArduino = new Data(this);
-    connect(port,&QSerialPort::readyRead,this,&UartController::slotRead);
+    connect(port, &QSerialPort::readyRead, this, &UartController::slotRead);
 }
 
 void UartController::slotRead()
 {
-    dataFromArduino->byteArray.clear();
-    dataFromArduino->byteArray.append(port->readAll());//перенести в Data в метод set
-
+    dataFromArduino->SetData(port->readAll());
     emit sig_sendDataToScreen(dataFromArduino);
-    qDebug()<< "Data IN: "<< dataFromArduino->byteArray;
-    //buffer->byteArray.clear();
-    //qDebug()<< "Data cleared";
 }
 
 void UartController::slotEnableLed()
@@ -29,9 +24,9 @@ void UartController::slotEnableLed()
 
 void UartController::SendData(QByteArray &byteArray, int length)
 {
-    if(byteArray.length() == length)
+    if (byteArray.length() == length)
     {
-        for(int i = 0;i<length;i++)
+        for (int i = 0; i<length; i++)
         {
             QByteArray temp;
             temp.resize(0);
@@ -40,9 +35,9 @@ void UartController::SendData(QByteArray &byteArray, int length)
             port->waitForBytesWritten();
             temp.clear();
         }
+        qDebug()<< "sent: "<< byteArray;
         byteArray.clear();
     }
-    qDebug()<< "sent: "<< dataFromArduino;
 }
 
 void UartController::slotDisableLed()
@@ -55,13 +50,13 @@ void UartController::slotDisableLed()
 
 void UartController::slotInit()
 {
-    if(PortInit("COM3"))
+    if (PortInit("COM3"))
     {
-        qDebug()<<"Port Opened!";
+        qDebug() << "Port Opened!";
     }
     else
     {
-        qDebug()<<"Port Failure!";
+        qDebug() << "Port Failure!";
     }
 }
 

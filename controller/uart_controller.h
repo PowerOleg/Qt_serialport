@@ -18,7 +18,7 @@ private:
     bool PortInit(QString name);
     void SendData(QByteArray &byteArray, int length);
 signals:
-   void sig_sendDataToScreen(const Data* data);
+   void sig_sendDataToScreen(Data* data);
 public slots:
     void slotRead();
     void slotEnableLed();

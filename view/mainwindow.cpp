@@ -9,15 +9,15 @@ MainWindow::MainWindow(QWidget *parent)
     uartController = new UartController(this);
     thread = new QThread();
 
-    connect(uartController, &UartController::sig_sendDataToScreen, this, [&](const Data* receivedData)
+    connect(uartController, &UartController::sig_sendDataToScreen, this, [&](Data* receivedData)
     {
+        ui->txtReadSerial->setText(receivedData->GetData());
         //char *data = receiveData.data();
         //int number = *data;
         //ui->txtReadSerial->setText(QString::number(number));
-        ui->txtReadSerial->setText(receivedData->byteArray);
     });
-    connect(thread,&QThread::started,uartController,&UartController::slotInit);
-    connect(thread,&QThread::finished,uartController,&UartController::slotClosePort);
+    connect(thread, &QThread::started, uartController, &UartController::slotInit);
+    connect(thread, &QThread::finished, uartController, &UartController::slotClosePort);
     uartController->moveToThread(thread);
     uartController->port->moveToThread(thread);
     thread->start();
@@ -26,8 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     thread->quit();
-    //delete com;
-    if(thread->isFinished())
+    if (thread->isFinished())
     {
         delete thread;
         delete ui;
@@ -42,4 +41,5 @@ void MainWindow::on_btnOn_clicked()
 void MainWindow::on_btnOff_clicked()
 {
     uartController->slotDisableLed();
+    ui->txtReadSerial->clear();
 }
