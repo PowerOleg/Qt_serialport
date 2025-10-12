@@ -9,7 +9,7 @@ class Data : public QObject
     Q_OBJECT
 public:
     explicit Data(QObject *parent = nullptr);
-    QByteArray TxArr;
+    QByteArray byteArray;
 };
 
 #endif // DATA_H

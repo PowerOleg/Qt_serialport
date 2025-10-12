@@ -6,7 +6,7 @@
 #include <QDebug>
 #include <QThread>
 #include <QtSerialPort>
-#include "controller/uart_controller.h"
+#include "../controller/uart_controller.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,7 +16,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    Uart_controller *com;
+    UartController *uartController;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 private slots:
@@ -24,6 +24,6 @@ private slots:
     void on_btnOff_clicked();
 private:
     Ui::MainWindow *ui;
-    QThread *thr;
+    QThread *thread;
 };
 #endif // MAINWINDOW_H

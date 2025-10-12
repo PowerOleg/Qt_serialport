@@ -1,57 +1,59 @@
 #include "uart_controller.h"
 
-Uart_controller::Uart_controller(QObject *parent)
+UartController::UartController(QObject *parent)
     : QObject{parent}
 {
     port = new QSerialPort(this);
-    data = new Data(this);
-    connect(port,&QSerialPort::readyRead,this,&Uart_controller::slotRead);
+    dataFromArduino = new Data(this);
+    connect(port,&QSerialPort::readyRead,this,&UartController::slotRead);
 }
 
-void Uart_controller::slotRead()
+void UartController::slotRead()
 {
-    QByteArray arr;
-    arr.append(port->readAll());
-    qDebug()<< "Data IN: "<< arr;
-    emit sig_sendDataToScreen(arr);
-    arr.clear();
+    dataFromArduino->byteArray.clear();
+    dataFromArduino->byteArray.append(port->readAll());//перенести в Data в метод set
+
+    emit sig_sendDataToScreen(dataFromArduino);
+    qDebug()<< "Data IN: "<< dataFromArduino->byteArray;
+    //buffer->byteArray.clear();
+    //qDebug()<< "Data cleared";
 }
 
-void Uart_controller::slotEnableLed()
+void UartController::slotEnableLed()
 {
-    TxArr.clear();
-    TxArr.resize(0);
-    TxArr.append(static_cast<char>(1));
-    SendData(TxArr,1);
+    QByteArray helloMessage;
+    helloMessage.resize(0);
+    helloMessage.append(static_cast<char>(1));
+    SendData(helloMessage, 1);
 }
 
-void Uart_controller::SendData(QByteArray Data, int length)
+void UartController::SendData(QByteArray &byteArray, int length)
 {
-    qDebug()<<Data;
-    if(Data.length() == length)
+    if(byteArray.length() == length)
     {
         for(int i = 0;i<length;i++)
         {
             QByteArray temp;
             temp.resize(0);
-            temp.append(Data[i]);
+            temp.append(byteArray[i]);
             port->write(temp);
             port->waitForBytesWritten();
             temp.clear();
         }
-        Data.clear();
+        byteArray.clear();
     }
+    qDebug()<< "sent: "<< dataFromArduino;
 }
 
-void Uart_controller::slotDisableLed()
+void UartController::slotDisableLed()
 {
-    TxArr.clear();
-    TxArr.resize(0);
-    TxArr.append(static_cast<char>(2));
-    SendData(TxArr,1);
+    QByteArray byeMessage;
+    byeMessage.resize(0);
+    byeMessage.append(static_cast<char>(2));
+    SendData(byeMessage, 1);
 }
 
-void Uart_controller::slotInit()
+void UartController::slotInit()
 {
     if(PortInit("COM3"))
     {
@@ -63,12 +65,12 @@ void Uart_controller::slotInit()
     }
 }
 
-void Uart_controller::slotClosePort()
+void UartController::slotClosePort()
 {
     port->close();
 }
 
-bool Uart_controller::PortInit(QString name)
+bool UartController::PortInit(QString name)
 {
     port->setParity(QSerialPort::NoParity);
     port->setStopBits(QSerialPort::OneStop);

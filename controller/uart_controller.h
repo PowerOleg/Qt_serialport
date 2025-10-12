@@ -6,19 +6,19 @@
 #include <QDebug>
 #include "../model/data.h"
 
-class Uart_controller : public QObject
+class UartController : public QObject
 {
     Q_OBJECT
-private:
-    QByteArray TxArr;
-    bool PortInit(QString name);
-    void SendData(QByteArray Data,int length);
 public:
     QSerialPort* port;
-    Data* data;
-    explicit Uart_controller(QObject *parent = nullptr);
+    Data* dataFromArduino;
+    explicit UartController(QObject *parent = nullptr);
+
+private:
+    bool PortInit(QString name);
+    void SendData(QByteArray &byteArray, int length);
 signals:
-   void sig_sendDataToScreen(QByteArray data);
+   void sig_sendDataToScreen(const Data* data);
 public slots:
     void slotRead();
     void slotEnableLed();
