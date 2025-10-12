@@ -4,7 +4,13 @@ Data::Data(QObject *parent)
     : QObject{parent}
 {}
 
-bool Data::SetData(QByteArray byteArray)
+bool Data::SetData(QByteArray &byteArray)
+{
+    this->byteArray = byteArray;
+    return true;
+}
+
+bool Data::CopyData(QByteArray byteArray)
 {
     this->byteArray.clear();
     this->byteArray.append(byteArray);
@@ -14,4 +20,9 @@ bool Data::SetData(QByteArray byteArray)
 QByteArray Data::GetData()
 {
     return this->byteArray;
+}
+
+bool Data::Clear()
+{
+    this->byteArray.clear();
 }

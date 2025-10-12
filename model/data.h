@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QByteArray>
+#include <QDebug>
 
 class Data : public QObject
 {
@@ -10,8 +11,10 @@ class Data : public QObject
 public:
     explicit Data(QObject *parent = nullptr);
 
-    bool SetData(QByteArray byteArray);
+    bool SetData(QByteArray &byteArray);
+    bool CopyData(QByteArray byteArray);
     QByteArray GetData();
+    bool Clear();
 private:
     QByteArray byteArray;
 };
