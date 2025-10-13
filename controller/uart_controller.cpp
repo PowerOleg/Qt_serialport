@@ -11,6 +11,7 @@ UartController::UartController(QObject *parent)
 void UartController::slotRead()
 {
     QByteArray array = port->readAll();
+    dataFromArduino->Clear();
     dataFromArduino->SetData(array);
     emit sig_sendDataToScreen(dataFromArduino);
 }
