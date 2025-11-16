@@ -22,6 +22,7 @@ UartController::UartController(QObject *parent) : QObject{parent}
 
 UartController::~UartController()
 {
+    port->close();
     delete port;
 }
 
@@ -82,11 +83,11 @@ void UartController::SlotInit()
 {
     if (PortInit("COM3"))//"/dev/ttyUSB0" в Linux
     {
-        qDebug() << "Port Opened!";
+        qDebug() << "Порт инициализирован";
     }
     else
     {
-        qDebug() << "Port Failure!";
+        qDebug() << "Ошибка инициализации порта";
     }
 }
 

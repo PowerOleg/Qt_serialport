@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
         graphClass->UpdateGraph(ui->customPlot);
     });
     connect(thread, &QThread::started, uartController, &UartController::SlotInit);
-    connect(thread, &QThread::finished, uartController, &UartController::SlotClosePort);
+    connect(thread, &QThread::finished, thread, &QThread::deleteLater);
 
     uartController->moveToThread(thread);
     uartController->port->moveToThread(thread);
@@ -39,22 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    thread->quit();
-    if (thread->isFinished())
-    {
-        delete thread;
-        delete ui;
-        delete uartController;
-    }
+    delete uartController;
+    delete ui;
+    thread->quit();//поток удаляется через connect
 }
-
-//void MainWindow::on_btnOn_clicked()
-//{
-//   uartController->slotEnableLed();
-//}
-
-//void MainWindow::on_btnOff_clicked()
-//{
-////    uartController->slotDisableLed();
-//    ui->txtReadSerial->clear();
-//}

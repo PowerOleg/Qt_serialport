@@ -19,6 +19,7 @@ private:
     void SendData(QByteArray &byteArray, int length);
 signals:
    void SendDataToScreen(const int x, const int y);
+   void finished();
 public slots:
     void SlotRead();
     void SlotEnable();
