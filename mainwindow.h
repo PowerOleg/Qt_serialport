@@ -5,19 +5,21 @@
 #include <QObject>
 #include <QThread>
 #include <QVector>
-#include "../controller/uart_controller.h"
-#include "../graphic.h"
+#include "graphic.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+class UartController;
+class Graphic;
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
     UartController *uartController;
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private:

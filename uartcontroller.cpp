@@ -1,6 +1,6 @@
 ﻿#include <QDebug>
 #include <QtSerialPort>
-#include "uart_controller.h"
+#include "uartcontroller.h"
 
 UartController::UartController(QObject *parent) : QObject{parent}
 {

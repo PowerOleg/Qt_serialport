@@ -1,6 +1,8 @@
 ﻿#include <QDebug>
 #include <QtSerialPort>
-#include "../qcustomplot.h"
+#include "uartcontroller.h"
+#include "graphic.h"
+#include "qcustomplot.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -19,8 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
         double doubleY = static_cast<double>(y);
         xVector.append(doubleX);
         yVector.append(doubleY);
-        qDebug() << doubleX;
-        qDebug() << doubleY;
+        qDebug() << "Получена координата Х:" << doubleX;
+        qDebug() << "Получена координата Y:" << doubleY;
     });
     connect(ui->btnRefresh, &QPushButton::clicked, this, [this]()
     {

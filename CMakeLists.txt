@@ -14,11 +14,11 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets SerialPort PrintS
 
 set(PROJECT_SOURCES
         main.cpp
-        view/mainwindow.cpp
-        view/mainwindow.h
-        view/mainwindow.ui
-        controller/uart_controller.h
-        controller/uart_controller.cpp
+        mainwindow.cpp
+        mainwindow.h
+        mainwindow.ui
+        uartcontroller.h
+        uartcontroller.cpp
         qcustomplot.h
         qcustomplot.cpp
         graphic.h

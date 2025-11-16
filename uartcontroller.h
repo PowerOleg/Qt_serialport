@@ -2,7 +2,7 @@
 #define UART_H
 
 #include <QObject>
-#include "../qcustomplot.h"
+#include "qcustomplot.h"
 
 class QSerialPort;
 
@@ -10,16 +10,14 @@ class UartController : public QObject
 {
     Q_OBJECT
 public:
-    QSerialPort* port;
     explicit UartController(QObject *parent = nullptr);
     ~UartController();
-
+    QSerialPort* port;
 private:
     bool PortInit(QString name);
     void SendData(QByteArray &byteArray, int length);
 signals:
    void SendDataToScreen(const int x, const int y);
-   void finished();
 public slots:
     void SlotRead();
     void SlotEnable();

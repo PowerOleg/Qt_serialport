@@ -11,14 +11,14 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Программа передачи/получения данных по UART</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="1" column="0" colspan="2">
      <widget class="QLabel" name="lbTitle">
       <property name="text">
-       <string>Данные от ардуино</string>
+       <string>Кнопки подключения к ардуино</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
