@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+﻿cmake_minimum_required(VERSION 3.5)
 
 project(serialport VERSION 0.1 LANGUAGES CXX)
 
@@ -9,8 +9,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets SerialPort)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets SerialPort)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets SerialPort PrintSupport)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets SerialPort PrintSupport)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -21,6 +21,10 @@ set(PROJECT_SOURCES
         controller/uart_controller.cpp
         model/data.h
         model/data.cpp
+        qcustomplot.h
+        qcustomplot.cpp
+        graphic.h
+        graphic.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -50,7 +54,8 @@ target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/model
 target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/view)
 target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/controller)
 target_link_libraries(serialport PRIVATE Qt6::Widgets
-                                        Qt6::SerialPort)
+                                        Qt6::SerialPort
+                                        Qt6::PrintSupport)
 
 set_target_properties(serialport PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

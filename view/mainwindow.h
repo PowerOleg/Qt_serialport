@@ -1,12 +1,15 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QDebug>
 #include <QMainWindow>
 #include <QObject>
-#include <QDebug>
 #include <QThread>
+#include <QVector>
 #include <QtSerialPort>
 #include "../controller/uart_controller.h"
+#include "../qcustomplot.h"
+#include "../graphic.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,11 +22,12 @@ public:
     UartController *uartController;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-private slots:
-    void on_btnOn_clicked();
-    void on_btnOff_clicked();
+
 private:
     Ui::MainWindow *ui;
     QThread *thread;
+    QVector<double> x, y;
+    Graphic* graphClass;
+    uint32_t graphQuantity = 1;
 };
 #endif // MAINWINDOW_H
