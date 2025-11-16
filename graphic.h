@@ -13,9 +13,9 @@ class Graphic : public QObject
 public:
     Graphic(QCustomPlot* cPlot, uint32_t graphQuantity);
 
-    void AddDataToGraph(QVector<double> x, QVector<double> y, uint32_t graphNumber);
+    void AddDataToGraph(QVector<double> &x, QVector<double> &y, uint32_t graphNumber);
     void ClearGraph(QCustomPlot* cPlot);
-    void UpdateGraph(QCustomPlot* cPlot);
+    void UpdateGraph(QCustomPlot *cPlot);
 
 private:
     QVector<QCPGraph*> ptrGraph;

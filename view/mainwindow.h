@@ -1,14 +1,11 @@
 ﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QDebug>
 #include <QMainWindow>
 #include <QObject>
 #include <QThread>
 #include <QVector>
-#include <QtSerialPort>
 #include "../controller/uart_controller.h"
-#include "../qcustomplot.h"
 #include "../graphic.h"
 
 QT_BEGIN_NAMESPACE
@@ -26,7 +23,7 @@ public:
 private:
     Ui::MainWindow *ui;
     QThread *thread;
-    QVector<double> x, y;
+    QVector<double> xVector, yVector;
     Graphic* graphClass;
     uint32_t graphQuantity = 1;
 };

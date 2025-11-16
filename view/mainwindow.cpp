@@ -1,4 +1,6 @@
 ﻿#include <QDebug>
+#include <QtSerialPort>
+#include "../qcustomplot.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -11,41 +13,38 @@ MainWindow::MainWindow(QWidget *parent)
     thread = new QThread();
     graphClass = new Graphic(ui->customPlot, graphQuantity);
 
-
-
-
-
-//    connect(uartController, &UartController::sendDataToScreen, this, [&](Data* receivedData)
-//    {
-//        ui->txtReadSerial->setText(receivedData->GetData());
-//        //char *data = receiveData.data();
-//        //int number = *data;
-//        //ui->txtReadSerial->setText(QString::number(number));
-    //    x.append(1.0);
-    //    x.append(5.0);
-    //    y.append(2.0);
-    //    y.append(10.0);
-        //    graphClass->AddDataToGraph(x, y, FIRST_GRAPH);
-
-//    });
-    connect(thread, &QThread::started, uartController, &UartController::slotInit);
-    connect(thread, &QThread::finished, uartController, &UartController::slotClosePort);
+    connect(uartController, &UartController::SendDataToScreen, this, [=](const int x, const int y)
+    {
+        double doubleX = static_cast<double>(x);
+        double doubleY = static_cast<double>(y);
+        xVector.append(doubleX);
+        yVector.append(doubleY);
+        qDebug() << doubleX;
+        qDebug() << doubleY;
+    });
+    connect(ui->btnRefresh, &QPushButton::clicked, this, [this]()
+    {
+        graphClass->AddDataToGraph(xVector, yVector, FIRST_GRAPH);
+        graphClass->UpdateGraph(ui->customPlot);
+    });
+    connect(thread, &QThread::started, uartController, &UartController::SlotInit);
+    connect(thread, &QThread::finished, uartController, &UartController::SlotClosePort);
 
     uartController->moveToThread(thread);
     uartController->port->moveToThread(thread);
-    connect(ui->btnOn, &QPushButton::clicked, uartController, &UartController::slotEnableLed, Qt::QueuedConnection);
-    connect(ui->btnOff, &QPushButton::clicked, uartController, &UartController::slotDisableLed, Qt::QueuedConnection);
+    connect(ui->btnOn, &QPushButton::clicked, uartController, &UartController::SlotEnable, Qt::QueuedConnection);
+    connect(ui->btnOff, &QPushButton::clicked, uartController, &UartController::SlotDisableLed, Qt::QueuedConnection);
     thread->start();
 }
 
 MainWindow::~MainWindow()
 {
-    delete uartController;
     thread->quit();
     if (thread->isFinished())
     {
         delete thread;
         delete ui;
+        delete uartController;
     }
 }
 

@@ -1,16 +1,20 @@
-﻿#include "uart_controller.h"
+﻿#include <QDebug>
+#include <QtSerialPort>
+#include "uart_controller.h"
 
 UartController::UartController(QObject *parent) : QObject{parent}
 {
     port = new QSerialPort();
-//    buffer = new Data();
-    connect(port, &QSerialPort::readyRead, this, &UartController::slotRead);
-    connect(port, &QSerialPort::bytesWritten, [](qint64 bytes) {//port->waitForBytesWritten();//waitForBytesWritten блокирует поток и readyRead всё крашит
+    connect(port, &QSerialPort::readyRead, this, &UartController::SlotRead);
+    connect(port, &QSerialPort::bytesWritten, [](qint64 bytes)
+    {
         qDebug() << "Отправлено байт:" << bytes;
     });
-    connect(port, &QSerialPort::errorOccurred, [this](QSerialPort::SerialPortError error) {
-        if (error == QSerialPort::ResourceError) {
-            qDebug() << "Критическая ошибка порта!" << port->errorString();
+    connect(port, &QSerialPort::errorOccurred, [this](QSerialPort::SerialPortError error)
+    {
+        if (error == QSerialPort::ResourceError)
+        {
+            qDebug() << "Ошибка порта:" << port->errorString();
             port->close();
         }
     });
@@ -19,35 +23,26 @@ UartController::UartController(QObject *parent) : QObject{parent}
 UartController::~UartController()
 {
     delete port;
-//    delete buffer;
 }
 
-void UartController::slotRead()
+void UartController::SlotRead()
 {
-    QByteArray received = port->read(receivedMessageSize);
-    qDebug() << "Получены данные (hex):" << received.toHex();
-
-
-//    for (char byte : received)
-//    {
-//        qDebug() << static_cast<int>(static_cast<unsigned char>(byte));
-//    }
-
-
-
-
-
-//    buffer->Clear();
-//    buffer->SetData(received);
-//    emit sendDataToScreen(byteArray);//отправить данные в график
+    QByteArray received = port->read(receiveMessageSize);
+    if (received.size() == 2)
+    {
+        int x = static_cast<int>(static_cast<unsigned char>(received[0]));
+        int y = static_cast<int>(static_cast<unsigned char>(received[1]));
+        emit SendDataToScreen(x, y);
+    }
+    received.clear();
 }
 
-void UartController::slotEnableLed()
+void UartController::SlotEnable()
 {
     QByteArray byteArray;//=QByteArray::fromHex("01");
     byteArray.resize(0);
     byteArray.append(static_cast<char>(0x01));
-    receivedMessageSize = 2;
+    receiveMessageSize = 2;
     SendData(byteArray, byteArray.size());
 }
 
@@ -67,22 +62,23 @@ void UartController::SendData(QByteArray &byteArray, int length)
             temp.append(byteArray[i]);
             port->write(temp);
             port->flush();
+            //port->waitForBytesWritten();//waitForBytesWritten блокирует поток и readyRead всё крашит
             temp.clear();
         }
         byteArray.clear();
     }
 }
 
-void UartController::slotDisableLed()
+void UartController::SlotDisableLed()
 {
     QByteArray byteArray;
     byteArray.resize(0);
     byteArray.append(static_cast<unsigned char>(0x02));
-    receivedMessageSize = 1;
+    receiveMessageSize = 1;
     SendData(byteArray, byteArray.size());
 }
 
-void UartController::slotInit()
+void UartController::SlotInit()
 {
     if (PortInit("COM3"))//"/dev/ttyUSB0" в Linux
     {
@@ -94,7 +90,7 @@ void UartController::slotInit()
     }
 }
 
-void UartController::slotClosePort()
+void UartController::SlotClosePort()
 {
     port->close();
 }

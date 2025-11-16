@@ -19,8 +19,6 @@ set(PROJECT_SOURCES
         view/mainwindow.ui
         controller/uart_controller.h
         controller/uart_controller.cpp
-        model/data.h
-        model/data.cpp
         qcustomplot.h
         qcustomplot.cpp
         graphic.h
